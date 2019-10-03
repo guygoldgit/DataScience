@@ -6,7 +6,6 @@ FROM dbo.courses$ AS a
 INNER JOIN dbo.classrooms$ AS b
 ON a.courseid=b.courseid
 
-SELECT * FROM dbo.studentiddepartmentid 
 
 SELECT   
 departmentid,
@@ -28,8 +27,6 @@ INTO dbo.englishstudents1
  INNER JOIN dbo.courses$ AS b
  ON a.courseid=b.courseid
  WHERE departmentid=1
-SELECT * FROM dbo.englishstudents1
-
 
 SELECT coursename,   ---------how many student in each english course----------
 COUNT (studentid) AS totstubycourse
@@ -41,7 +38,6 @@ COUNT (DISTINCT studentid)
 FROM dbo.englishstudents1 AS tot_eng_stu
 
 ---------------------------question 2c -------------------------------------
-SELECT * FROM dbo.Departments$
 
 SELECT a.studentid,b.courseid,b.coursename
 INTO dbo.science_student_courses
@@ -66,7 +62,6 @@ AS class_size
 INTO dbo.courses_class_size
 FROM dbo.course_stu_amount
   
-SELECT * FROM dbo.courses_class_size
 
 SELECT class_size,
 COUNT (coursename) AS total_class_number
@@ -75,7 +70,6 @@ GROUP BY class_size -------------the answer----------
 
 ------------------------Question 2 d ----------------------------------------
 
-select * FROM dbo.students$
 
 SELECT gender,     ----------the answer---------
 COUNT(DISTINCT studentid) AS totalstudents 
@@ -94,7 +88,6 @@ GROUP BY Gender
  INNER JOIN  dbo.classrooms$ AS b
  ON a.studentid=b.studentid
  
- SELECT * FROM dbo.stu_gen_cou
 
  SELECT courseid, gender, 
  COUNT (DISTINCT studentid) AS totalstudents
@@ -103,7 +96,6 @@ GROUP BY Gender
  GROUP BY courseid, gender
  ORDER BY courseid
 
- SELECT * FROM dbo.TOT_cou_stu_by_gen 
  
  SELECT courseid,
  SUM(totalstudents) AS total 
@@ -111,7 +103,6 @@ GROUP BY Gender
  FROM dbo.TOT_cou_stu_by_gen 
  GROUP BY courseid
 
- SELECT * FROM dbo.TOT_cou_stu_by_gen
 
  SELECT a.courseid, a.gender,a.totalstudents AS total_gender_students, b.total
  INTO dbo.full_gen_stu
@@ -120,7 +111,6 @@ GROUP BY Gender
  ON a.courseid=b.courseid
  ORDER BY courseid 
 
- SELECT * FROM dbo.full_gen_stu
 
  SELECT courseid, gender,
  CAST(total_gender_students AS FLOAT) AS new_tot_gen_stu,
@@ -132,7 +122,6 @@ GROUP BY Gender
  INTO dbo.percentage_gen_courses
   FROM dbo.new_course_gen
 
-  SELECT * FROM dbo.percentage_gen_courses
 
   SELECT b.coursename,a.courseid,a.gender,a.percentage
   FROM dbo.percentage_gen_courses AS a 
@@ -142,8 +131,6 @@ GROUP BY Gender
  -------------- question 2f----------------------
 
 
-SELECT * FROM dbo.Courses$
-SELECT * FROM dbo.Classrooms$
 
 SELECT a.courseid, a.coursename,a.departmentid, b.studentid, b.degree
 INTO dbo.department_degree
@@ -166,8 +153,6 @@ ELSE 'low'
 END AS avgchar
 INTO dbo.avgchar
 FROM dbo.department_avg
-
-SELECT * FROM dbo.avgchar
 
 SELECT DepartmentID,avgchar,
 COUNT(studentid) AS numberofstudents
@@ -255,7 +240,6 @@ INTO dbo.avgbyteacherid
  GROUP BY TeacherId
  ORDER BY teacher_avg DESC
 
- SELECT * FROM dbo.avgbyteacherid
  
  SELECT b.firstname+b.lastname AS [teacher full name],b.gender,a.teacher_avg -------the answer--------- 
  FROM dbo.avgbyteacherid as a
