@@ -14,7 +14,7 @@ COUNT (studentid) AS total_students
 INTO dbo.tot_dept_students 
 FROM dbo.studentiddepartmentid
 GROUP BY departmentid
-ORDER BY departmentid
+
 
 SELECT b.departmentname, a.total_students FROM dbo.tot_dept_students As a  -------the answer----------
 INNER JOIN dbo.Departments$ AS b
@@ -50,7 +50,6 @@ INNER JOIN  dbo.courses$ AS b
 ON a.Courseid=b.Courseid
 WHERE Departmentid=2
 
-SELECT * FROM dbo.science_student_courses
 
 SELECT coursename,
 COUNT (studentid) AS total_course_stu
@@ -58,7 +57,6 @@ INTO dbo.course_stu_amount
 FROM dbo.science_student_courses
 GROUP BY coursename
 
-SELECT * FROM dbo.course_stu_amount
 
 SELECT coursename,
 CASE WHEN (total_course_stu<22) then 'small'
@@ -202,11 +200,6 @@ WHERE avgchar='high'
 
 --------------------question 2g
 
-SELECT * FROM dbo.Courses$
-SELECT * FROM dbo.Classrooms$
-
-
-SELECT * FROM dbo.department_avg
 
 SELECT departmentid,StudentId,[AVG],
 CASE WHEN 
@@ -215,8 +208,6 @@ ELSE 'below60'
 END AS avgchar
 INTO dbo.avgchar60
 FROM dbo.department_avg
-
-SELECT * FROM dbo.avgchar60
 
 
 SELECT DepartmentID,avgchar,
@@ -266,7 +257,7 @@ INTO dbo.avgbyteacherid
 
  SELECT * FROM dbo.avgbyteacherid
  
- SELECT b.firstname,b.lastname,b.gender,a.teacher_avg -------the answer--------- 
+ SELECT b.firstname+b.lastname AS [teacher full name],b.gender,a.teacher_avg -------the answer--------- 
  FROM dbo.avgbyteacherid as a
 INNER JOIN dbo.Teachers$ as b
 ON a.TeacherId=b.TeacherId
@@ -348,7 +339,7 @@ GROUP BY StudentId
  
  
  CREATE VIEW dbo.Vstudent_totcourse_avgDEP_gen
- AS SELECT a.studentid,a.FirstName,a.LastName, b.DepartmentName, a.avgbydept AS departmentaverage,  a.total_nuberof_courses,a.generalavg
+ AS SELECT a.studentid,a.FirstName+a.LastName AS [student full name], b.DepartmentName, a.avgbydept AS departmentaverage,  a.total_nuberof_courses,a.generalavg
  FROM dbo.studentgeneralanddepartmentavg AS a
  JOIN dbo.Departments$ AS b 
  ON a.departmentid=b.DepartmentId
