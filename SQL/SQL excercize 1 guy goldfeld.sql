@@ -6,10 +6,12 @@ FROM dbo.courses$ AS a
 INNER JOIN dbo.classrooms$ AS b
 ON a.courseid=b.courseid
 
+SELECT * FROM dbo.studentiddepartmentid
+
 
 SELECT   
 departmentid,
-COUNT (studentid) AS total_students
+COUNT ( DISTINCT studentid) AS total_students
 INTO dbo.tot_dept_students 
 FROM dbo.studentiddepartmentid
 GROUP BY departmentid
@@ -29,7 +31,7 @@ INTO dbo.englishstudents1
  WHERE departmentid=1
 
 SELECT coursename,   ---------how many student in each english course----------
-COUNT (studentid) AS totstubycourse
+COUNT (DISTINCT studentid) AS totstubycourse
 FROM  dbo.englishstudents1 
 GROUP BY coursename
 
@@ -46,6 +48,7 @@ INNER JOIN  dbo.courses$ AS b
 ON a.Courseid=b.Courseid
 WHERE Departmentid=2
 
+SELECT * FROM dbo.science_student_courses
 
 SELECT coursename,
 COUNT (studentid) AS total_course_stu
@@ -72,13 +75,13 @@ GROUP BY class_size -------------the answer----------
 
 
 SELECT gender,     ----------the answer---------
-COUNT(DISTINCT studentid) AS totalstudents 
+COUNT( studentid) AS totalstudents 
 FROM dbo.students$
 WHERE gender IS NOT NULL
 GROUP BY Gender
  
 -------the student is wrong there are more 165 females and 115 males-----------------
-
+ 
 --------------------------------------Question 2e-------------------
 
  
@@ -88,6 +91,9 @@ GROUP BY Gender
  INNER JOIN  dbo.classrooms$ AS b
  ON a.studentid=b.studentid
  
+ SELECT * FROM dbo.stu_gen_cou
+ ORDER BY studentID
+
 
  SELECT courseid, gender, 
  COUNT (DISTINCT studentid) AS totalstudents
@@ -120,7 +126,7 @@ GROUP BY Gender
 
  SELECT courseid,gender, new_tot_gen_stu/new_total*100 AS percentage
  INTO dbo.percentage_gen_courses
-  FROM dbo.new_course_gen
+ FROM dbo.new_course_gen
 
 
   SELECT b.coursename,a.courseid,a.gender,a.percentage
@@ -241,8 +247,8 @@ INTO dbo.avgbyteacherid
  ORDER BY teacher_avg DESC
 
  
- SELECT b.firstname+b.lastname AS [teacher full name],b.gender,a.teacher_avg -------the answer--------- 
- FROM dbo.avgbyteacherid as a
+SELECT b.firstname+b.lastname AS [teacher full name],b.gender,a.teacher_avg -------the answer--------- 
+FROM dbo.avgbyteacherid as a
 INNER JOIN dbo.Teachers$ as b
 ON a.TeacherId=b.TeacherId
 ORDER BY teacher_avg DESC
@@ -275,7 +281,8 @@ ON a.CourseId=b.courseid
 
 --------------------- Question 3b----------------
 
-SELECT a.StudentId,a.degree,a.CourseId,b.DepartmentID INTO dbo.classroom1 FROM dbo.Classrooms$ AS a
+SELECT a.StudentId,a.degree,a.CourseId,b.DepartmentID
+ INTO dbo.classroom1 FROM dbo.Classrooms$ AS a
 INNER JOIN dbo.Courses$ AS b
 ON a.CourseId=b.CourseId
 
