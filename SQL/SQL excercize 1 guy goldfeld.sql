@@ -194,7 +194,7 @@ WHERE avgchar='high'
 
 SELECT departmentid,StudentId,[AVG],
 CASE WHEN 
-AVG>60 THEN 'above60'
+AVG>=60 THEN 'above60'
 ELSE 'below60'
 END AS avgchar
 INTO dbo.avgchar60
