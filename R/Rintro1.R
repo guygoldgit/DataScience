@@ -48,7 +48,6 @@ min(v1)
 max(v1)
 mean(v1)
 summary(v1)
-
 ### generate a vector of characters
 v2 <- c("Yes","No","No","Yes","No","Yes","No","No")
 summary(v2)
@@ -75,7 +74,7 @@ str(v4)
 ### generate a logical vector
 v5 <- c(TRUE, FALSE, FALSE, TRUE, FALSE)
 
-### Factors
+### Factors is a datatype like ctegorigal
 v2
 v2a <- factor(v2)
 v2a
@@ -107,14 +106,15 @@ v7
 # numeric sequence incremented by a specific number
 v8 <- seq(from=10, to=100, by=5)
 v8
-v8 <- seq(10,100,5)
+v8 <- seq(10,100,5)# the same like the upper one
 v8
 
 # string sequence
-v9 <- letters
-v10 <- LETTERS
+v9 <- letters# leters is a vector contains all the abc "small" letters
+v10 <- LETTERS # leters is a vector contains all the abc "small" letters
 v9[5]
 v10[1:3]
+v10[(c(5,15,22))]
 
 length(v10)
 v10[seq(1,26,3)]
@@ -127,7 +127,7 @@ a - 5
 a / 2
 a^2
 sqrt(a)
-log(a)
+log(a)# e base 
 log10(a)
 
 a * a
@@ -140,13 +140,13 @@ a - c(2,4)  ### cycling
 ########### Matrices
 ############################
 
-## create matrix - input data by row
+## create matrix - input data by row (the default)
 m1 <- matrix(c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4), nrow=4, ncol=4, byrow=TRUE)
 dim(m1)
 nrow(m1)
 ncol(m1)
 m1
-
+class(m1)
 ## create matrix - input data by column
 m1 <- matrix(c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4), nrow=4, ncol=4, byrow=FALSE)
 dim(m1)
@@ -161,7 +161,7 @@ m1
 m1 <- matrix(c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4), ncol=4)
 dim(m1)
 m1
-
+###get help
 ?matrix
 
 ### column and row operations
@@ -203,6 +203,8 @@ m1 %*% m3
 m2 %*% m3
 
 
+m1*m3
+
 ###### Special matrices
 ### unit matrix
 matrix(1,ncol=5,nrow=8)
@@ -225,14 +227,14 @@ I
 s
 solve(s)
 s %*% solve(s)
-
+?solve
 ##########################
 ### Arrays
 ##########################
 
 ### Matrices can represent bidimentional objects. 
 ### To represent multidimentional object we use arrays
-a1 <- array(1:24, c(3,4,2))
+a1 <- array(1:24, c(3,4,2))#3-number of rows,4- number of columns, 2- 2 dimensions(like 2 matrixes)
 a1
 class(a1)
 str(a1)
@@ -300,14 +302,15 @@ l4$chrlst
 
 ### retrieving a value from an object in a list
 l4[[2]][[1]][2]   # this will return the character "c" from the second object (chrlst)
-
+l4[[2]][[2]]
+l4[[1]][[1]][4]
 ### list of lists
-l5 <- list(list(model="2018 Toyota Camry Hybrid", price=32400, mpg=52),
-           list(model="2018 Ford Fusion Hybrid", price=37370 , mpg=42),
-           list(model="2018 Toyota Prius", price=30565 , mpg=52),
-           list(model="2018 Hyundai Ioniq",price=28300, mpg=58),
-           list(model="2018 Kia Optima Hybrid",price=35210, mpg=43),
-           list(model="2018 Ford C-Max Hybrid",price=27275, mpg=40)
+l5 <- list(a1=list(model="2018 Toyota Camry Hybrid", price=32400, mpg=52),
+           a2=list(model="2018 Ford Fusion Hybrid", price=37370 , mpg=42),
+           a3=list(model="2018 Toyota Prius", price=30565 , mpg=52),
+           a4=list(model="2018 Hyundai Ioniq",price=28300, mpg=58),
+           a5=list(model="2018 Kia Optima Hybrid",price=35210, mpg=43),
+           a6=list(model="2018 Ford C-Max Hybrid",price=27275, mpg=40)
       )
 
 l5
@@ -363,13 +366,15 @@ str(df)
 summary(df)
 
 ### Subseting a data.frame
-df[3,]
+df[3,]#values at the third row
 df[,3]
+
 
 df$c
 df$b
 
 df.false <- subset(df, c==FALSE)
+df.false
 
 ### changing the values of some rows in a variable based on a condition
 df
@@ -380,7 +385,7 @@ df
 df$c <- NULL
 df[,-3]
 
-df[-5,]
+df[-5,]# deleting the fifth row
 
 #########################################
 ### Data type conversion
@@ -421,9 +426,13 @@ b
 c <- NA
 is.na(c)
 
+datasets::
 ### NULL deletes a column in a data frame 
 df <- mtcars
+View(df)
+?mtcars
 df$mpg <- NULL
+df
 
 set.seed(4)
 names.vec <- c('Avi', 'Ben', 'Gad', 'Dan', 'Harel', 'Vered', 'Zelig')
@@ -440,6 +449,7 @@ guys <- data.frame(name = names.vec,
                    has.pet = has.pet.vec,
                    stringsAsFactors = F)
 
+View(guys)
 print(guys)
 summary(guys)
 str(guys)
