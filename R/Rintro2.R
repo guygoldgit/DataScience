@@ -26,7 +26,7 @@ max(df$price)
 mean(df$price)
 sd(df$price)
 median(df$price)
-quantile(df$price,c(0.1,0.25,0.75,0.9))
+quantile(df$price,c(0.1,0.25,0.75,0.9))#we can define a percentile vector 
 sum(df$price)
 
 ########################
@@ -82,18 +82,22 @@ summary(s2)
 
 s3 <- c("I","love","data","science")
 
+s10 <- c("x1","x2","x3","x4")
+s11<-paste("y",paste(s10,colapse  ="+"),sep="~") #"y~x1 +" "y~x2 +" "y~x3 +" "y~x4 +"
+s11
+
 s4 <- paste(s1,collapse=" ")
 s4
 class(s4)
 str(s4)
 summary(s4)
 
-s5 <- paste(s1,collapse="+")
+s5 <- paste(s1,colapse="+")
 s5
 class(s5)
 str(s5)
 
-s6 <- paste0("I","love","data","science")
+s6 <- paste0("I","love","data","science") #nospace between words
 s6
 class(s6)
 str(s6)
@@ -135,6 +139,35 @@ round(pi,4)
 ceiling(pi)
 floor(pi)
 
+#class little excercise
+dfir<-iris
+dfir
+mean(dfir$Sepal.Length)
+min(dfir$Sepal.Length)
+max(dfir$Sepal.Length)
+mean(dfir$Sepal.Width)
+mean(dfir$Petal.Length)
+mean(dfir$Petal.Width)
+summary(dfir)
+
+car=mtcars
+mtcars
+sqrt(car$mpg)
+log(car$disp)
+car$wt^3
+
+Sc <-paste("age","gender","height","weight",sep=" + ")
+Sc
+Sm=c("age","gender","height","weight")
+paste(Sm,collapse=" + ") #at vectors we use collapse
+
+m1<-matrix(c(4,7,-8,3,0,-2,1,-5,12,-3,6,9),ncol=4)
+m1
+rowMeans(m1)
+colMeans(m1)
+mean(m1)
+
+### End of class Exercise
 ##############################################################
 ###   SYSTEM FUNCTIONS
 ##############################################################
@@ -149,6 +182,7 @@ dt <- Sys.time()  ## get system date-time
 
 dt
 format(dt,format="%d-%m-%Y")  ## date format: '22-10-2014'
+format(dt,format="%d-%m-%y")  ## date format: '22-10-14'
 format(dt,format="%m/%d/%Y")  ## date format: '10/22/2014'
 format(dt,format="%H:%M")     ## time format: '17:05'
 format(dt,format="%I:%M %p")  ## time format: '05:05 PM'
@@ -156,10 +190,17 @@ format(dt,format="%I:%M %p")  ## time format: '05:05 PM'
 timestamp()
 date()
 
+d3<-"10-02-2105"
+d3
+d4<-as.Date(d3)
+d4<-as.Date(d3,format="%d-%m-%Y")
+d4
+class(d4)
+
 ### Sequences
 1:10
 seq(1,10,2)
-rep(0.5, 10)
+rep(0.5, 10)#0.5 Ten times
 length(c(1,2,3,4,5,6,7,8,9,10))
 
 ### randomization
@@ -168,7 +209,7 @@ for (n in 1:4) {
   print(sample(c(1,2,3,4,5,6,7,8,9,10),3))
 }
 
-set.seed(123)
+set.seed(88)
 for (n in 1:4) {
   print(sample(c(1,2,3,4,5,6,7,8,9,10),3))
 }
@@ -183,6 +224,8 @@ runif(n=5, min=-3, max=3)  ## 3 random numbers between -3 and 3
 
 ## normal distribution
 rnorm(n=10, mean=5, sd=2)
+rnd<-rnorm(n=10000, mean=5, sd=2)
+hist(rnd)
 
 ## binomial distribution
 rbinom(n=10, size=1, prob=0.4)
@@ -224,7 +267,7 @@ cities = c('Jerusalem', 'Tel Aviv', 'Haifa')
 !('Jerusalem' %in% cities)  ## not in
 !('Holon' %in% cities)      ## not in
 
-############################################
+njknjnjknjnjnj############################################
 ### Apply and friends
 ############################################
 
@@ -234,6 +277,7 @@ cities = c('Jerusalem', 'Tel Aviv', 'Haifa')
 m1 <- matrix(c(rep(1,5),rep(2,5),rep(3,5),rep(4,5),rep(5,5)),ncol=5,byrow=T)
 m1
 apply(X = m1, MARGIN = 1, FUN = sum)
+apply( m1,1,sum) #the same like the upper
 apply(X = m1, MARGIN = 2, FUN = sum)
 
 
@@ -248,6 +292,7 @@ l1
 
 
 lapply(l1, sum)
+lapply(l1, colSums)
 ### We can use the selection operator `[` for extracting values at the same position
 ### Get the element of the third column of each element of a list 
 lapply(l1, "[",,3)  
@@ -264,10 +309,11 @@ l1
 ### We can use the selection operator `[` for extracting values at the same position
 ### the following extract the first value of each element in the list 
 sapply(l1, "[",1,simplify = F)
+sapply(l1, "[",1,simplify = T)
 
 ### This will extract matrices containing the three first rows and columns of each element 
 sapply(l1, "[",1:3,1:3,simplify = F)
-
+sapply(l1, "[",1:3,1:3,simplify = T)
 ### Simplify true will make the same, but joining the output into one unique matrix
 sapply(l1, "[",1:3,1:3,simplify = T)
 
@@ -285,10 +331,10 @@ m1 == m2
 
 ### generate a list of vectors containing letters repeated 4 times each 
 mapply(rep, LETTERS[1:6], 4, SIMPLIFY = FALSE)
-
+mapply(rep, LETTERS[1:6], 4, SIMPLIFY = TRUE)
 ### what will this generate?
 mapply(rep, LETTERS[1:6], 6:1, SIMPLIFY = FALSE)
-
+mapply(rep, LETTERS[1:6], 6:1, SIMPLIFY = TRUE)
 #####################################################################
 ############  Programming with R
 #####################################################################
@@ -307,6 +353,12 @@ c(x,y)
 x <- 5
 y <- 0
 if( x > 5 ) { y = 10 } else { y = 5 }
+c(x,y)
+
+x <- 5
+y <- 0
+if( x > 5 ) { y = 10 } else if (x>3) { y = 5 } else {y=2}
+y<-ifelse(x > 5, 10,ifelse(x>3,2,7))
 c(x,y)
 
 ###  ifelse(condition, value1, value2) 
