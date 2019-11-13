@@ -432,6 +432,9 @@ plot(x, y)
 plot(x ~ y)  ## what happen with the axes?
 lines(x ~ y)
 
+plot(y ~ x)  ## what happen with the axes?
+lines(y ~ x)
+
 plot(x, y, type='o') ## points and lines
 plot(x, y, type='p') ## points
 plot(x, y, type='l') ## lines
@@ -445,23 +448,23 @@ plot(iris$Sepal.Length ~ iris$Sepal.Width)
 ## lets add to the graph a vertical line at the mean septal lenght
 abline(h=mean(iris$Sepal.Length), col="red")
 ## and an horizontal line at the mean septal with
-abline(v=mean(iris$Sepal.Width), col="red")
+abline(v=mean(iris$Sepal.Width), col="darkgreen")# there are color indexes
 
 ##############################
 ###### plot parameters
 ##############################
 
 ### defining the x and y limits
-plot(x=NULL, xlim=c(1,10), ylim=c(1,11))
+plot(x=NULL, xlim=c(1,10), ylim=c(0,11))
 
 ### line width
 y <- 1 
-for(n in seq(0.5,5,0.5)) {
+for(n in seq(0.5,5,0.5)) {  #n=0.5,1,1.5,2.....
   abline(h=y, lwd=n)
   y <- y + 1
 }
 ### write the values of the line width 0.2 points over the line
-text(x=rep(3,9),y = seq(1.2,10.2,1),labels = paste("lwd=",seq(0.5,5,0.5)))
+text(x=rep(3,9),y = seq(1.4,10.4,1),labels = paste("lwd=",seq(0.5,5,0.5)))
 
 
 ### line type (6 types)
@@ -506,27 +509,32 @@ for(x in 1:4) {
   for(y in 1:4) {
     p <- y+(2*(x-1))
     points(x,y,pch=gr[x],bg=cl[y],cex=2)
-    text(x,y+0.2,labels=paste("pch=",q[p]),cex=0.7)
+    text(x,y+0.2,labels=paste("pch=",q[p]),cex=0.7) # cex is the letters size
   }
 }
 
 ### barplot
-barplot(df$mpg)
 
+barplot(mtcars$mpg)
+table(mtcars$cyl)
+barplot(table(mtcars$gear)) #only for categorical 
 ### histograms and boxplots
-x <- rnorm(400, mean=40, sd=15)
+x <- rnorm(400, mean=40, sd=15) #normal distribution
 hist(x)
+summary(x)
 y <- rbinom(1:400, 2, 0.3)
 summary(y)
+y
 table(y)
+boxplot(x)
 boxplot(x ~ y)
 
-t1 <- table(v2)
+t1 <- table(y)
 t1
 pie(t1)
 
 scatter.smooth(x)
-
+scatter.smooth(x,col=y+1)
 ### adding color to a plot
 mycol <- ifelse(x >44,"red","blue")
 scatter.smooth(x, col=mycol)
@@ -546,8 +554,9 @@ legend(x="bottomright",
        cex=0.5,
        horiz = T)
 
+
 ### ploting many graphics at once
-par(mfrow=c(2,2))
+par(mfrow=c(2,2))# 2 rows 2 columns
 cl <- as.numeric(iris$Species)
 plot(iris$Sepal.Length, main="Septal Lenght",col=cl)
 plot(iris$Sepal.Width, main="Septal Width",col=cl)

@@ -6,7 +6,7 @@
 ##########  dplyr
 ##############################
 
-library(dplyr)
+library(dplyr) # only Data Frame not vectors!!!!
 
 #### transform a data.frame into a dplyr compatible data table
 class(iris)
@@ -20,7 +20,9 @@ iris2
 
 #### selection of columns
 iris2 %>% select(Sepal.Length, Sepal.Width)
-
+iris3<-iris2 %>% select(Sepal.Length, Sepal.Width)
+iris3
+select(iris2,Sepal.Length,Sepal.Width) # another way of column selection 
 ### selection of rows using a condition
 iris2 %>% filter(Species=="setosa")
 
@@ -45,34 +47,38 @@ df1 <- iris2 %>%
          Petal.ratio = Petal.Length/Petal.Width,
          id = 1:nrow(iris2)) %>%
   select(id, Sepal.ratio, Petal.ratio)
+df1
+
 
 iris2 <- iris2 %>%
   mutate(id = 1:nrow(iris2))
 
-iris3 <- inner_join(iris2, df1, by="id")
+iris3 <- inner_join(iris2, df1, by="id")# there is also left join
 
 iris3
+View(iris3)
 
 #### order the data by a column
 iris3 %>%
-  arrange(Sepal.Length)
+  arrange(Sepal.Length) # default is ascending
 
 iris3 %>%
   arrange(desc(Petal.Width))
 
 #### counting
-iris3 %>% tally()
+iris3 %>% tally()  # count the number of rows
 
 iris3 %>% group_by(Species) %>% tally()
 
-iris3 %>% group_by(Species) %>% summarise(cnt = n())
-
+df4=iris3 %>% group_by(Species) %>% summarise(cnt = n()) 
+df4 %>% group_by(Species) %>% summarise(cnt = n()) 
+iris3 %>% unique()%>% group_by(Species) %>% summarise(cnt = n())
 ######## complex transformation
 ### Get the minimum, maximum and average of the height and mass, the count and the 
 ### number of males, females and those without a defined gender, of the characters of 
 ### the movie 'starwars' that appeared in the film "Attack of the Clones" 
 ### and by their homeworld procedence
-
+View(starwars)
 head(starwars)
 
 starwars$films
@@ -95,7 +101,7 @@ mysw <- starwars %>%
             nogender = sum(nogender, na.rm=TRUE),
             num_individuals=n()) %>%
   arrange(desc(num_individuals))
-
+mysw
 
 ##############################
 ##########  ggplot2
@@ -107,7 +113,7 @@ library(ggplot2)
 #   <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
 
 ### a simple graph
-plot(iris3$Sepal.Length ~ iris3$Sepal.Width)
+plot(iris3$Sepal.Width ~ iris3$Sepal.Length)
 
 ####################################
 ### a ggplot2 graph
@@ -198,7 +204,7 @@ ggplot(data = iris3) +
 
 ggplot(data = iris3,mapping = aes(x=Sepal.Length)) + 
   geom_histogram(bins = 30)
-
+hist(iris3$Sepal.Length)
 ### Bar graph
 iris3 <- iris3 %>%
   mutate(Sepal.Length.cat=factor(round(Sepal.Length,0)),
