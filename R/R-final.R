@@ -2,8 +2,8 @@
 #### On Linux server:
 library(DBI)
 con <- dbConnect(odbc::odbc(), .connection_string = "Driver={ODBC Driver 17 for SQL Server};server=192.168.1.1;
-database=COLLEGE;uid=dsuser02;
-pwd=DSuser02!", timeout = 10)
+database=COLLEGE;uid=dsuser04;
+pwd=DSuser04!", timeout = 10)
 
 #### On Windows:
 library(DBI)

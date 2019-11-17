@@ -322,7 +322,7 @@ strsplit(c("The boy is playing with his car, his father is talking on the phone"
 
 ### separating by a point
 strsplit(c("The boy is playing with his car. His father is talking on the phone"),split='\\.')
-
+strsplit(c("The boy is playing with his car. His father is talking on the phone"),split='.')
 
 ####################################################
 ############   Functions
@@ -351,7 +351,7 @@ c(5)
 b <- c(1,2,3,4,5)
 c(b)
 
-rm(c)
+rm(c)# erase a function
 
 BMI <- function(weight, height) {
   weight/(height^2)
@@ -362,7 +362,7 @@ BMI(85,1.65)
 
 weights <- c(rnorm(10,mean=75,sd=8.5))
 heights <- c(rnorm(10,mean=1.75,sd=0.2))
-
+weights
 BMI(weights, heights)
 
 BMI()
@@ -460,9 +460,14 @@ class(mydata)
 str(mydata)
 
 ####### Excel
+install.packages("rJava")
+
+Sys.setenv(JAVA_HOME="") #at home
 library(xlsx)
 df1 <- read.xlsx("excel-example.xlsx",sheetIndex = 1)
-df2 <- read.xlsx("excel-example.xlsx",sheetIndex = 2)
+df2 <- read.xlsx("excel-example.xlsx",sheetIndex = 2,endRow = 9)
+df1
+df2# alot of NA
 
 ### Write a data.frame to an excel file
 write.xlsx(df1, "one-sheet-example.xlsx", sheetName="Data Frame")
@@ -563,12 +568,17 @@ json_data[[1]]$per_page
 
 json_df <- as.data.frame(json_data)
 
-
+View(json_df)
 ########################
 #### DATABASE
 ########################
 
 #### To be able to query the database we need to create a new ODBC DNS on the windows computer
+####linux server 
+
+
+
+
 
 
 library(DBI)
@@ -576,4 +586,4 @@ con <- dbConnect(odbc::odbc(), "tcds")
 sql <- "SELECT * FROM acs2015_country_data"
 acs <- dbGetQuery(con, sql)
 dbDisconnect(con)
-
+sql
