@@ -1,21 +1,4 @@
 
-#### On Linux server:
-library(DBI)
-con <- dbConnect(odbc::odbc(), .connection_string = "Driver={ODBC Driver 17 for SQL Server};server=192.168.1.1;
-database=COLLEGE;uid=dsuser04;
-pwd=DSuser04!", timeout = 10)
-
-#### On Windows:
-library(DBI)
-con <- dbConnect(odbc::odbc(), .connection_string = "DSN=COLLEGE;Trusted_Connection=yes;", timeout = 10)
-
-## Get the whole table:
-df <- dbReadTable(con, "Classrooms")
-
-
-
-
-
 library(dplyr)
 library(DBI)
 con <- dbConnect(odbc::odbc(), .connection_string = "DSN=COLLEGE;Trusted_connection=yes;", timeout=10)
@@ -72,7 +55,7 @@ View(English)
 
 English %>% group_by(CourseName) %>% summarise(count=n())
 English1 <- English %>% unique()%>% group_by(StudentId) %>% summarise(count=n())
-nrow(English1)
+nrow(English1)#the total number of students in english department
 
 
 
@@ -172,16 +155,19 @@ df2 %>% group_by(CourseName,DepartmentName,FirstName,LastName) %>% summarise(cou
 ##      the average of the grades per class, and their overall average (for each student 
 ##      show the student name).
 ##############
-df1$EnglishDegree[df1$DepartmentID == 1] <- df1$degree
-df1$ScienceDegree[df1$DepartmentID == 2] <- df1$degree
-df1$ArtsDegree[df1$DepartmentID == 3] <- df1$degree
-df1$SportDegree[df1$DepartmentID == 4] <- df1$degree
-studentsview <- df1 %>% group_by(StudentId,FirstName,LastName) %>% summarise(count=n(),
-                                                                             mean(EnglishDegree,na.rm = T)
-                                                                             ,mean(ScienceDegree,na.rm = T)
-                                                                             ,mean(ArtsDegree,na.rm = T)
-                                                                             ,mean(SportDegree,na.rm = T)
-                                                                             ,mean(degree,na.rm = T))
-View(studentsview)
+English <- df1 %>% filter(DepartmentID==1)
+Science <- df1 %>% filter(DepartmentID==2)
+Arts <- df1 %>% filter(DepartmentID==3)
+Sport <- df1 %>% filter(DepartmentID==4)
 
 
+English2 <- English %>% group_by(StudentId,FirstName,LastName) %>% summarise(Engdeg=mean(degree,na.rm = T))
+Science2 <- Science %>% group_by(StudentId,FirstName,LastName) %>% summarise(Scedeg=mean(degree,na.rm = T))
+Arts2 <- Arts %>% group_by(StudentId,FirstName,LastName) %>% summarise(ArtDeg=mean(degree,na.rm = T))
+Sport2 <- Sport %>% group_by(StudentId,FirstName,LastName) %>% summarise(SpoDeg=mean(degree,na.rm = T))
+CoursesData <- df1 %>% group_by(StudentId,FirstName,LastName) %>% summarise(count=n(),mean(degree,na.rm = T))
+studentsview <- full_join(CoursesData,English2)
+studentsview <- full_join(studentsview,Science2)
+studentsview <- full_join(studentsview,Arts2)
+studentsview <- full_join(studentsview,Sport2)
+View(studentsview %>% arrange(StudentId))
