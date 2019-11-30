@@ -11,15 +11,14 @@ con <- dbConnect(odbc::odbc(), .connection_string = "DSN=COLLEGE;Trusted_Connect
 
 ## Get the whole table:
 df <- dbReadTable(con, "Classrooms")
-inner_
 
 
-library(dplyr)
+
 
 
 library(dplyr)
 library(DBI)
-con <- dbConnect(odbc::odbc(), .connection_string = "DSN=COLLEGE;Trusted_////connection=yes;", timeout=10)
+con <- dbConnect(odbc::odbc(), .connection_string = "DSN=COLLEGE;Trusted_connection=yes;", timeout=10)
 
 
 Students <- dbReadTable(con,"Students$")
