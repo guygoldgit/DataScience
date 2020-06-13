@@ -7,18 +7,27 @@ into count1
 from train
 GROUP BY item_nbr
 
-select *,  year([date]) AS Year, month([date]) AS month
+SELECT * from count1
+
+SELECT Top 100 * from train
+
+select *,  year([date]) AS [Year], month([date]) AS [month]
 into #train1
 FROM train
 DROP TABLE #train1
+drop table #train2
 
 
-SELECT a.[date], a.id, a.item_nbr, a.onpromotion, a.store_nbr, a.unit_sales, year(a.[date]) AS [Year], month(a.[date]) AS month
+SELECT a.item_nbr, a.onpromotion, a.store_nbr, a.unit_sales, year(a.[date]) AS [Year], month(a.[date]) AS month
 INTO #train2
 FROM train AS a
-left JOIN count1 As b
+INNER JOIN count1 As b
 ON a.item_nbr=b.item_nbr
 WHERE b.co >= 50000
+
+DROP TABLE #train2
+
+DROP TABLE #train2 
 
 select top 100 * from #train2
 
@@ -33,15 +42,21 @@ SELECT item_nbr, store_nbr, [Year], [month],
 SUM (unit_sales) AS total_unit_sales
 INTO #train4
 FROM #train3
+WHERE unit_sales>=0
 GROUP BY item_nbr, store_nbr, [Year], [month]
+
+
 
 SELECT *  
 INTO train5
 FROM #train4
 
-SELECT * from train5
+DROP TABLE train5
 
+SELECT * from train5
+DROP TABLE sales_over_time
 -- sales over time table
+
 SELECT item_nbr, store_nbr, [Year],[month],total_unit_sales, 
 LAG(total_unit_sales,1) OVER (PARTITION BY item_nbr,store_nbr ORDER BY [Year],[month]) AS prev_month_sales,
 LAG(total_unit_sales,3) OVER (PARTITION BY item_nbr,store_nbr ORDER BY [Year],[month]) AS prev_3month_sales,
@@ -50,6 +65,8 @@ MIN (total_unit_sales) OVER (PARTITION BY item_nbr,store_nbr ORDER BY [Year],[mo
 MAX (total_unit_sales) OVER (PARTITION BY item_nbr,store_nbr ORDER BY [Year],[month] ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS max_prev_3months_sales
 INTO sales_over_time
 from train5
+
+
 
 SELECT Year([date]) AS [Year], month([date]) AS [month],
 CAST(dcoilwtico AS FLOAT) AS dcoilwtico
@@ -137,11 +154,15 @@ CASE WHEN (a.family = 'HOME AND KITCHEN II') THEN 1 ELSE 0 END AS 'HOME AND KITC
 CASE WHEN (a.family = 'DELI') THEN 1 ELSE 0 END AS 'DELI'
 INTO families
 from items AS a 
-inner join count1 AS b ON a.item_nbr=b.item_nbr
-WHERE b.co >= 50000
 
 
-SELECT * FROM items_by_families
+inner join train5 AS b ON a.item_nbr=b.item_nbr
+
+SELECT  * FROM items
+
+DROP TABLE families
+
+SELECT * FROM families
 
 
 
@@ -227,7 +248,7 @@ INTO store_nbr_by_city
 from stores
 
 DROP TABLE st
-
+SELECT * FROM transactions
 SELECT * FROM stores
 
 SELECT [date],Year([date]) AS [Year], month([date]) AS [month], store_nbr,
@@ -349,9 +370,13 @@ GROUP BY city
 SELECT * FROM sales_by_cities
 SELECT * FROM city_total_stores
 
+SELECT top 100 *  FROM train5
 
 
-CREATE VIEW project_flatfilev AS 
+DROP VIEW project_flatfilev
+
+
+CREATE VIEW project_flatfilev AS
 SELECT a.item_nbr, a.store_nbr, a.[Year], a.[month], a.total_unit_sales,
 b.city, b.[state], b.[type] AS store_type, b.cluster AS store_cluster,
 c.prev_month_sales, c.prev_3month_sales, c.avg_prev_3months_sales, c.min_prev_3months_sales, c.max_prev_3months_sales,
@@ -393,7 +418,28 @@ ON a.store_nbr=j.store_nbr
 INNER JOIN store_nbr_by_city AS k 
 ON a.store_nbr=k.store_nbr
 
-CREATE VIEW project_flatfilev1 AS 
+SELECT * from project_flatfilev
+
+SELECT TOP 100 * from project_flatfilev
+
+SELECT top 10 * FROM #train4
+
+SELECT top 100 * FROM stores
+
+SELECT * FROM families
+
+SELECT item_nbr FROM project_flatfilev 
+
+DROP VIEW project_flatfilev
+
+SELECT ROW_NUMBER () OVER (ORDER BY [YEAR],[MONTH]) AS id, * 
+INTO final_table
+FROM project_flatfilev 
+
+
+
+
+CREATE VIEW project_flatfilev AS 
 SELECT a.item_nbr, a.store_nbr, a.[Year], a.[month], a.total_unit_sales,
 c.prev_month_sales, c.prev_3month_sales, c.avg_prev_3months_sales, c.min_prev_3months_sales, c.max_prev_3months_sales,
 d.monthly_oilprice_avg,
@@ -406,7 +452,7 @@ i.[BREAD/BAKERY], i.LINGERIE, i.BEVERAGES, i.DAIRY, i.[PERSONAL CARE],
 i.[PREPARED FOOD],i.MAGAZINES,i.[PET SUPPLIES],i.[HOME APPLIANCES],i.PRODUCE,i.HARDWARE,i.[HOME CARE], i.[FROZEN FOODS],
 i.BEAUTY,i.POULTRY,i.[PLAYERS AND ELECTRONICS],i.CELEBRATION,i.[GROCERY II],i."""LIQUOR", i.MEATS, i.EGGS, i.LADIESWEAR,
 i.[GROCERY I], i.[BABY CARE], i.CLEANING, i.[HOME AND KITCHEN II], i.DELI,
-j.store_typeA, j.store_typeB, j.store_typeC, j.store_typeD, j.store_typeE,
+j.store_typeA, j.store_typeB, j.store_typeC, j.store_typeD, j.store_typeE
 k.city_Ambato, k.city_Babahoyo, k.city_Cayambe, k.city_Cuenca,k.city_Daule,
 k.[city_El Carmen],k.city_Esmeraldas,k.city_Guaranda,k.city_Guayaquil,k.city_Ibarra,
 k.city_Latacunga,k.city_Libertad,k.city_Loja, k.city_Machala, k.city_Manta,
@@ -441,4 +487,33 @@ ON a.[Year]=m.[Year] AND a.[month]=m.[month]
 INNER JOIN onprom_by_month AS n 
 ON a.item_nbr=n.item_nbr AND a.[Year]=n.[Year] AND a.[month]=n.[month]
 
-select * from project_flatfilev1
+DROP VIEW project_flatfilev, project_flatfilev1, project_flatfilev2,project_flatfilev3
+
+CREATE VIEW project_flatfilev1 AS
+SELECT ROW_NUMBER() OVER(ORDER BY [Year], [month]) AS id, * 
+FROM project_flatfilev
+
+SELECT top 10 * from project_flatfilev1  
+
+CREATE VIEW project_flatfilev2 AS
+SELECT  * 
+FROM project_flatfilev  
+WHERE id <=1000000
+
+CREATE VIEW project_flatfilev3 AS
+SELECT  * 
+FROM project_flatfilev1  
+WHERE id >1000000
+
+
+DROP TABLE project_flatfilev1
+
+WHERE total_unit_sales < 0
+
+DROP table project_flatfilev1
+DROP view project_flatfilev2
+DROP table project_flatfilev3
+
+drop view project_flatfilev
+
+SELECT * FROM train5

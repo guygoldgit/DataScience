@@ -1,0 +1,12 @@
+Feature_name,Scale,Missing Mechanism,NA Treatment,why
+prev_month_sales,ratio,MNAR,remove rows,Decision which has takes sfter looking at the NA's cluster
+prev_3month_sales,ratio,MNAR,remove rows,Decision which has takes sfter looking at the NA's cluster
+avg_prev_3months_sales,ratio,MNAR,remove rows,Decision which has takes sfter looking at the NA's cluster
+min_prev_3months_sales,ratio,MNAR,remove rows,Decision which has takes sfter looking at the NA's cluster
+max_prev_3months_sales,ratio,MNAR,remove rows,Decision which has takes sfter looking at the NA's cluster
+total_month_transactions,ratio,MNAR,remove rows,Decision which has takes sfter looking at the NA's cluster
+prev_month_transactions,ratio,MNAR,remove rows,Decision which has takes sfter looking at the NA's cluster
+prev_3month_transactions,ratio,MNAR,remove rows,Decision which has takes sfter looking at the NA's cluster
+ avg_prev_3month_transactions,ratio,MNAR,remove rows,Decision which has takes sfter looking at the NA's cluster
+min_prev_3months_transactions,ratio,MNAR,remove rows,Decision which has takes sfter looking at the NA's cluster
+max_prev_3months_transactions,ratio,MNAR,remove rows,Decision which has takes sfter looking at the NA's cluster

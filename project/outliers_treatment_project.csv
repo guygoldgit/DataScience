@@ -1,0 +1,12 @@
+Feature_name,Scale,outliers Treatment,why
+prev_month_sales,ratio,drop,doesn't affect both assumptions and results
+prev_3month_sales,ratio,drop,doesn't affect both assumptions and results
+avg_prev_3months_sales,ratio,drop,doesn't affect both assumptions and results
+min_prev_3months_sales,ratio,drop,doesn't affect both assumptions and results
+max_prev_3months_sales,ratio,drop,doesn't affect both assumptions and results
+total_month_transactions,ratio,drop,doesn't affect both assumptions and results
+prev_month_transactions,ratio,drop,doesn't affect both assumptions and results
+prev_3month_transactions,ratio,drop,doesn't affect both assumptions and results
+ avg_prev_3month_transactions,ratio,drop,doesn't affect both assumptions and results
+min_prev_3months_transactions,ratio,drop,doesn't affect both assumptions and results
+max_prev_3months_transactions,ratio,drop,doesn't affect both assumptions and results
